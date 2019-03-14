@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+    <head>
+        <title>
+            See Robot
+        </title>
+        <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+        <style>
+            #divRobot{
+                font-family: 'Inconsolata', monospace;
+            }
+
+            #outer{
+                width:100%;
+                text-align: center;
+            }
+
+            #inner{
+                width: 50%;
+                margin-left: 25%;
+                margin-right: 25%;
+                border: solid;
+            }
+
+            .centered {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                /* bring your own prefixes */
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
+    <body>
+        <br>
+        <br>
+        <div id="outer">
+            <div id="inner">
+                    <br/><br/>
+                <div id="divRobot"></div>
+                <div>
+                    <hr/>
+                    <br/><br/>
+                    <input type="button" onclick="GetRandomRobot();" value="Random Robot" /> <br/><br/>
+                    <input id="txtRobotId" type="text" value="" />
+                    <input type="button" onclick="GetRobot();" value="Generate Robot" /> 
+                    <br/><br/><br/>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script defer>
+        $(document).ready(function () {
+            
+            GetRandomRobot();
+         });
+
+         function GetRandomRobot(){
+            $.ajax({
+                type: "GET",
+                url: "/robot",
+                success: function (jsReturnArgs) {
+                    $("#divRobot").html(jsReturnArgs.body);
+                    $("#txtRobotId").val(jsReturnArgs.id);
+                },
+                error: function (errorData) {
+                    console.log("Did not load");
+
+                }
+            });
+         }
+
+         function GetRobot(){
+            $.ajax({
+                type: "GET",
+                url: "/robot/"+ $("#txtRobotId").val(),
+                //data: {"id":  $("#txtRobotId").val()},
+                success: function (jsReturnArgs) {
+                    $("#divRobot").html(jsReturnArgs.body);
+                    $("#txtRobotId").val(jsReturnArgs.id);
+                },
+                error: function (errorData) {
+                    console.log("Did not load");
+
+                }
+            });
+         }
+    </script>
+</html>
